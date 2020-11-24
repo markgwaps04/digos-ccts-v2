@@ -1,0 +1,172 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>DIGOS | {{ title }}</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no"/>
+    <meta name="description" content="This is an example dashboard created using build-in elements and components.">
+    <meta name="msapplication-tap-highlight" content="no">
+    <!--
+    =========================================================
+    * ArchitectUI HTML Theme Dashboard - v1.0.0
+    =========================================================
+    * Product Page: https://dashboardpack.com
+    * Copyright 2019 DashboardPack (https://dashboardpack.com)
+    * Licensed under MIT (https://github.com/DashboardPack/architectui-html-theme-free/blob/master/LICENSE)
+    =========================================================
+    * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+    -->
+    <link href="/static/testers_assets/main.css" rel="stylesheet">
+    <link href="{% static 'css/main.css' %}" rel="stylesheet">
+    <link href="{% static 'testers_assets/custom.css' %}" rel="stylesheet">
+    <link href="{% static 'scripts/readmore/css/style.css' %}" rel="stylesheet">
+    <link type="text/css" href="{% static 'bower_components/jsgrid/dist/jsgrid.css' %}" rel="stylesheet">
+    <link type="text/css" href="{% static 'bower_components/jsgrid/dist/jsgrid-theme.css' %}" rel="stylesheet">
+
+    <link type="text/css" href="{% static 'plugins/iCheck/icheck.css' %}" rel="stylesheet">
+
+    {% block styles %} {% endblock %}
+
+    <script src="{% static 'plugins/prefix.js' %}"></script>
+</head>
+<body>
+<div class="teacher app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+
+    <div class="app-header header-shadow bg-success header-text-dark">
+        <div class="app-header__logo no-width">
+            {% if not not_authenticated %}
+                <div class="logo-src"></div>
+            {% else %}
+              <h6 class="text-white"> Digos Covid Tracing Management System </h6>
+            {% endif %}
+        </div>
+        <div class="app-header__menu">
+                <span>
+                    <button type="button"
+                            class="btn-icon btn-icon-only btn btn-primary btn-sm mobile-toggle-header-nav">
+                        <span class="btn-icon-wrapper">
+                            <i class="fa fa-ellipsis-v fa-w-6"></i>
+                        </span>
+                    </button>
+                </span>
+        </div>
+        <div class="app-header__content">
+            <div class="app-header-left">
+                {% if not not_authenticated %}
+
+                <ul class="header-menu nav">
+                    <li class="nav-item">
+                        <a href="/home" class="nav-link">
+                            <i class="nav-link-icon fa fa-home"> </i>
+                            Home
+                        </a>
+                    </li>
+                </ul>
+
+                {% endif %}
+
+            </div>
+            <div class="app-header-right">
+                <div class="header-btn-lg pr-0">
+                    <div class="widget-content p-0">
+                        <div class="widget-content-wrapper">
+
+                            {% if not not_authenticated %}
+
+                            <div class="widget-content-left">
+                                <div class="btn-group">
+                                    <a href="/media/{{profile.profile}}" aria-haspopup="true" aria-expanded="false"
+                                       class="p-0 btn">
+                                        <img width="42" height="42" class="rounded-circle"
+                                             src="/media/{{profile.profile}}"
+                                             alt="">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="widget-content-left  ml-3 header-user-info">
+                                <div class="widget-heading">
+                                    {{profile.establishment_name|lower|title}}
+                                </div>
+                                <div class="widget-subheading">
+                                    {% if user.is_superuser %}
+                                    Admin
+                                    {% else %}
+                                    User
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="widget-content-right header-user-info ml-3">
+                                <a href="/logout" class="btn-shadow p-1 btn btn-primary btn-sm">
+                                    <i class="fa text-white fa-calendar pr-1 pl-1"></i>
+                                </a>
+                            </div>
+
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% block before_main %}
+
+    {% endblock %}
+
+    <div class="app-main">
+        
+        <div class="app-main__outer">
+
+            {% block content %} {% endblock %}
+
+            <div class="app-wrapper-footer">
+                <div class="app-footer">
+                    <div class="app-footer__inner">
+                        <div class="app-footer-left">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <b class="copyright">&copy; {% now "Y" %} Covid Contact Tracing Management System -
+                                        Application </b> All
+                                    rights
+                                    reserved.
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+{% block outside %}{% endblock %}
+
+<script type="text/javascript" src="{% static 'scripts/jquery-1.9.1.min.js' %}"></script>
+<script src="{% static 'plugins/iCheck/icheck.js' %}"></script>
+<script src="{% static 'scripts/jquery.cookie.min.js' %}"></script>
+<script src="{% static 'scripts/index.js' %}" type="text/javascript"></script>
+<script type="text/javascript" src="{% static 'scripts/bootstrap.js' %}"></script>
+<script type="text/javascript" src="{% static 'testers_assets/scripts/main.js' %}"></script>
+<script type="text/javascript" src="{% static 'scripts/readmore/js/index.js' %}"></script>
+<script src="{% static 'node_modules/moment/min/moment.min.js' %}"></script>
+<script src="{% static 'bower_components/jsgrid/dist/jsgrid.js' %}"></script>
+<script src="{% static 'node_modules/parsleyjs/dist/parsley.js' %}"></script>
+<script src="{% static 'scripts/js_modules/parsely_validation_plugin.js' %}"></script>
+
+{% block scripts %} {% endblock %}
+
+{% block end %}{% endblock %}
+
+</body>
+</html>

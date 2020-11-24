@@ -1,0 +1,48 @@
+<div class="modal fade hide fullscreen-container" id="myModal" style="top:10px">
+    <div class="modal-dialog modal-xl fullscreen-content">
+        <div class="modal-content">
+            <div class="modal-header bg-success">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h3 class="modal-title">Phone number verification</h3>
+            </div>
+
+
+            <form class="form-horizontal row-fluid" id="form-phone-number-verification">
+
+                <div class="modal-body">
+                    <h4>Great, lets start printing!</h4>
+                    <p>
+                        We need to verify this phone number <b>(+63 <span class="phone_number">9093522667</span>)</b>
+                        before you can
+                        print by
+                        sending you a SMS text message with a verification code. We will not use or share your number
+                        for
+                        other purposes without your consent.
+                    </p>
+
+                    <div class="control-group">
+                        <label class="control-label">
+                            <b>Verification code</b>
+                        </label>
+                        <div class="controls">
+                            <input type="text" name="verification_code" required=""
+                                   placeholder="Required" value="" class="span7 tip">
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button"
+                            class="btn btn-default"
+                            data-dismiss="modal">Close
+                    </button>
+                    <button type="submit" class="btn btn-primary">Submit and send request</button>
+                </div>
+
+            </form>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

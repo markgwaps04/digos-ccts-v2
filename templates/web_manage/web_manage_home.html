@@ -1,0 +1,146 @@
+﻿{% extends "web_manage/base_template_for_manage.html" %}
+
+{% load static %}
+
+{% block styles_after %}
+
+<style>
+    .add-on, input { height : inherit !important }
+    #smartwizard .tab-content {
+        height : auto !important;
+        width : 100%;
+    }
+    .tab-pane { width :100% !important }
+    .btn-box.btn-success.biege  { background : #5bc0de2e !important }
+    .btn-box img {
+        width: 85%;
+        height: 145px;
+    }
+    .btn-box b {
+        font-size: 16px;
+        font-weight:bold;
+    }
+
+    .box-notification
+    {
+        position: absolute;
+        top: -11px;
+        font-size: 21px;
+        padding: 14px;
+        border-radius: 100%;
+        background: #f75252;
+        border: 1px solid red;
+        right: -14px;
+    }
+
+    .btn-box
+    {
+        position: relative;
+        margin-top: 8px;
+    }
+
+
+
+
+
+
+
+</style>
+
+{% endblock %}
+
+
+{% block full_content %}
+
+<div class="span10 center main_container">
+    <div class="content">
+
+        <div class="module fullscreen-container" id="household">
+            <div class="module-head bg-sky-blue">
+                <h3>Digos Covid Tracing System Admin</h3>
+                <div class="right-action hide_mobile">
+                    <button type="submit" class="btn btn-large btn-zoom-in">
+                        <b>Zoom In</b>
+                    </button>
+                    <button type="submit" class="btn btn-large btn-zoom-reset">
+                        <b>Reset Zoom</b>
+                    </button>
+                    <button type="submit" class="btn btn-large btn-fullscreen">
+                        <b>Full screen</b>
+                    </button>
+                </div>
+            </div>
+            <div class="module-body fullscreen-content">
+
+                {% for message in messages %}
+
+                <div class="alert {{ message.tags }}">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    {% if message.extra_tags %}
+                    <strong><i class="icon-exclamation-sign icon"></i> {{ message.extra_tags|title }},
+                    </strong>
+                    {% endif %}
+                    {{ message }}
+                </div>
+
+                {% endfor %}
+
+                <div class="btn-controls">
+
+                    <div class="btn-box-row row-fluid">
+                        <a href="/admin/establishment" class="btn-box big btn-success biege span3">
+                            <img src="{% static 'eadmin/images/building.png' %}">
+                            <b>Establishment request</b>
+                            {% if building_request %}
+                            <span class="label box-notification">
+                                    {{building_request}}
+                                </span>
+                            {% endif %}
+                        </a>
+
+
+                        <a href="/admin/household" class="btn-box big btn-success biege span3">
+                            <img src="{% static 'eadmin/images/family_covid2.png' %}">
+                            <b>Household request</b>
+                            {% if household_request %}
+                            <span class="label box-notification">
+                                    {{household_request}}
+                                </span>
+                            {% endif %}
+                        </a>
+
+                        <a href="/admin/household" class="btn-box big btn-success biege span3">
+                            <img src="{% static 'eadmin/images/family_covid2.png' %}">
+                            <b>Visitor request</b>
+                            {% if household_request %}
+                            <span class="label box-notification">
+                                    {{household_request}}
+                                </span>
+                            {% endif %}
+                        </a>
+
+                         <a href="/admin/household" class="btn-box big btn-success biege span3">
+                            <img src="{% static 'eadmin/images/family_covid2.png' %}">
+                            <b>Working Pass Request</b>
+                            {% if not household_request %}
+                            <span class="label box-notification">
+                                    5
+                                </span>
+                            {% endif %}
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+
+    </div><!--/.content-->
+</div><!--/.span9-->
+
+
+{% endblock %}
+
+

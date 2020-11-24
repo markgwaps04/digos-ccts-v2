@@ -1,0 +1,200 @@
+<form action="/register/building_owner/request"
+      method="POST"
+      enctype="multipart/form-data"
+      class="form-horizontal row-fluid form-register" data-parsley-validate>
+    {% csrf_token %}
+
+    <div class="docs-example no_m_t">
+
+        <div class="control-group">
+            <label class="control-label">
+                <b>Email</b>
+            </label>
+            <div class="controls">
+                <input type="email" required
+                       class="span7 tip"
+                       name="establishment_email"
+                       value="{{data.establishment_email}}"
+                       placeholder="Email Address">
+                <span class="helper">
+                    To secure your account,
+                    we'll send you a security code to verify your identity
+                </span>
+                <span class="help-inline"></span>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label">
+                <b>Username</b>
+            </label>
+            <div class="controls">
+                <input data-title="Please input your username"
+                       type="text"
+                       name="username"
+                       required
+                       placeholder="Please input your username"
+                       data-parsley-remote
+                       data-parsley-nospaces
+                       data-parsley-minlength="6"
+                       data-parsley-trigger="focusout"
+                       data-parsley-remote-validator='username_exist'
+                       data-parsley-remote-message="Dili available ang gipili na username."
+                       value="{{data.username}}"
+                       class="span7 tip">
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label">
+                <b>Password</b>
+            </label>
+            <div class="controls">
+                <input data-title="Password"
+                       id="establishment_password"
+                       type="password"
+                       required=""
+                       name="password"
+                       placeholder="Password"
+                       class="span7 tip">
+            </div>
+        </div>
+
+
+        <div class="control-group">
+            <label class="control-label">
+                <b>Confirm Password</b>
+            </label>
+            <div class="controls">
+                <input data-title="Confirm Password"
+                       data-parsley-equalto="#establishment_password"
+                       type="password"
+                       required=""
+                       placeholder="Confirm Password"
+                       class="span7 tip">
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label">
+                <b>Establishment name</b>
+            </label>
+            <div class="controls">
+                <input data-title="Pangalan sa establishmento"
+                       type="text"
+                       name="establishment_name"
+                       required
+                       placeholder="Pangalan sa establishmento"
+                       value="{{data.establishment_name}}"
+                       class="span7 tip">
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label">
+                <b>Street</b>
+            </label>
+            <div class="controls">
+                <input data-title="Street"
+                       name="establishment_street"
+                       type="text"
+                       required
+                       placeholder="Street (Required)"
+                       value="{{data.street}}"
+                       class="span7 tip">
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label">
+                <b>Barangay</b>
+            </label>
+            <div class="controls">
+                <select class="span7 tip barangay_resident" required name="establishment_barangay">
+                    <option value="" selected disabled>Select barangay (Required)
+                    </option>
+                    {% for per in barangay %}
+                    <option value="{{per.id}}">
+                        {{per.name|lower|title}}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label">
+                <b>Purok</b>
+            </label>
+            <div class="controls">
+                <select id="purok" class="span7 tip" required name="establishment_purok">
+                    <option class="default" value="" selected disabled>Select barangay and purok
+                        (Required)
+                    </option>
+
+                    {% for per in purok %}
+                    <option value="{{per.id}}">
+                        {% if per.barangay %}
+                        {{per.barangay.name|lower|title}}, {{per.name|lower|title}}
+                        {% else %}
+                        {{per.name|lower|title}}
+                        {% endif %}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+
+    </div>
+
+    <h4>Pag-ila</h4>
+    <p>
+        Tinoa ang imong pagtukod pinaagi sa paghatag usa ka balido nga id, permits o bisan
+        unsang mga dokumento nga nagpamatuod nga ang imong negosyo o institusyon tinuod ug
+        ligal.
+    </p>
+
+
+    <div class="docs-example no_m_t">
+
+        <div class="control-group">
+            <label class="control-label">
+                <b>Establishment Identification</b>
+            </label>
+            <div class="controls">
+                <input data-title="Please choose a file" required="" type="file" name="verification_file"
+                       accept="application/msword,application/pdf,image/*" class="span9 tip btn btn-large btn-block">
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label">
+                <b>Profile</b>
+            </label>
+            <div class="controls">
+                <input data-title="Please choose a file" required="" type="file" name="profile"
+                       accept="image/*" class="span9 tip btn btn-large btn-block">
+            </div>
+        </div>
+
+    </div>
+
+    <div class="control-group">
+        <label class="control-label">
+            <b>*</b>
+        </label>
+        <div class="controls">
+            <div class="g-recaptcha" data-sitekey="{{GOOGLE_RECAPTCHA_SITE_KEY}}"></div>
+        </div>
+
+    </div>
+
+    <div class="control-group">
+        <div class="controls">
+            <button type="submit" class="btn btn-large btn-success">Submit Form</button>
+        </div>
+    </div>
+
+
+</form>

@@ -1,0 +1,132 @@
+{% extends "auth/base_template_for_auth.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="module fullscreen-container">
+
+    <div class="module-head bg-green">
+        <h3>Confirm your account</h3>
+        <div class="right-action hide_mobile">
+            <button type="submit" class="btn btn-large btn-zoom-in">
+                <b>Zoom In</b>
+            </button>
+            <button type="submit" class="btn btn-large btn-zoom-reset">
+                <b>Reset Zoom</b>
+            </button>
+            <button type="submit" class="btn btn-large btn-fullscreen">
+                <b>Full screen</b>
+            </button>
+        </div>
+    </div>
+    <div class="module-body fullscreen-content">
+
+        {{email_params}} {{sms_params}}
+
+        {% for message in messages %}
+
+        <div class="alert {{ message.tags }}">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            {% if message.extra_tags %}
+            <strong><i class="icon-exclamation-sign icon"></i> {{ message.extra_tags|title }},
+            </strong>
+            {% endif %}
+            {{ message }}
+        </div>
+
+        {% endfor %}
+
+        <h4>Great, lets start printing!</h4>
+
+
+        {% if profile.account_type == "building_owner" %}
+
+        <p>A email message with your verification code has been sent <b>({{profile.user.email}})</b>. Please enter the
+            6-digit verification
+            code below.
+        </p>
+
+        <p>
+            We need to verify you email.
+            before you can
+            print by
+            sending you a email message with a verification code. We will not use or share your account information
+            for
+            other purposes without your consent.
+        </p>
+        <br/>
+        <form class="form-horizontal row-fluid"
+              method="POST" action="/building_owner/email/verification/request">
+
+            {% csrf_token %}
+
+            <label class="control-label" style="text-align:left">
+                <b>Verification code</b>
+            </label>
+            <div class="control-group">
+
+                <div class="controls">
+                    <input type="text" name="verification_code" required=""
+                           placeholder="Required" value="" class="span7 tip">
+                </div>
+
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <button type="submit" class="btn btn-large btn-success">
+                        Submit
+                    </button>
+                </div>
+            </div>
+        </form>
+
+
+        {% else %}
+
+        <p>A text message with your verification code has been sent <b>(+63 <span
+                class="phone_number">{{profile.phone_number}}
+        </span>)</b>. Please enter the 5-digit verification code below.
+        </p>
+
+        <p>
+            We need to verify you phone number.
+            before you can
+            print by
+            sending you a SMS text message with a verification code. We will not use or share your number
+            for
+            other purposes without your consent.
+        </p>
+
+        <form class="form-horizontal row-fluid"
+              method="POST" action="/{{type}}/phone_number/verification/request">
+
+            {% csrf_token %}
+
+            <label class="control-label" style="text-align:left">
+                <b>Verification code</b>
+            </label>
+            <div class="control-group">
+
+                <div class="controls">
+                    <input type="text" name="verification_code" required=""
+                           placeholder="Required" value="" class="span7 tip">
+                </div>
+
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <button type="submit" class="btn btn-large btn-success">
+                        Submit
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        {% endif %}
+
+    </div>
+</div>
+
+{% endblock %}
+

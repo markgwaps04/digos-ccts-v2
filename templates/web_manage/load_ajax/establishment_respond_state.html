@@ -1,0 +1,60 @@
+<div class="modal hide cus fullscreen-container"
+     data-backdrop="static" data-keyboard="false" style="top:10px">
+    <div class="modal-backdrop"></div>
+    <div class="overlay-spinner">
+        <div class="icon">
+            <i class="fa-spin fa fa-spinner"></i>
+        </div>
+    </div>
+    <div class="modal-dialog modal-xl fullscreen-content">
+        <div class="modal-content">
+
+            {% if data.is_confirm == 1 %}
+
+            <div class="modal-header bg-green state_alert when_approved">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3 class="modal-title"><i class="fa fa-check-circle"></i> &nbsp; Approved request</h3>
+            </div>
+
+            {% elif data.is_confirm == 2 %}
+
+            <div class="modal-header bg-warning state_alert when_declined">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3 class="modal-title"><i class="fa fa-times"></i> &nbsp; Declined request</h3>
+            </div>
+
+            {% endif %}
+
+            <div class="modal-header bg-light no-padding">
+
+                <div class="media stream cus">
+                    <a href="/media/{{data.profile}}" target="_blank" class="media-avatar medium pull-left">
+                        <img src="/media/{{data.profile}}">
+                    </a>
+                    <div class="media-body">
+                        <div class="stream-headline">
+                            <div class="pull-left" style="max-width:55%">
+                                <h4 class="stream-author">
+                                    <a href="/home">{{data.establishment_name|lower|title}}</a>
+                                </h4>
+                                <div class="stream-text">
+                                    <b><a href="#">{{data.user.email}}</a></b>
+                                </div>
+                                <div class="stream-text">
+                                    <b>Purok, </b> {{data.purok.name|lower|title}}
+                                </div>
+                                <div class="stream-text">
+                                    <b>Barangay, </b> {{data.purok.barangay.name|lower|title}}
+                                </div>
+                                <div class="stream-text">
+                                    <b>Account created</b>, {{data.date_created}}
+                                </div>
+                            </div>
+                        </div><!--/.stream-headline-->
+                    </div>
+                </div>
+
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>

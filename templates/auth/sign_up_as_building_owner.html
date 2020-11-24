@@ -1,0 +1,295 @@
+﻿{% extends "auth/base_template_for_auth.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="module fullscreen-container">
+
+    <div class="module-head bg-green">
+        <h3>Magrehistro ingon nga tag-iya sa building</h3>
+        <div class="right-action hide_mobile">
+            <button type="submit" class="btn btn-large btn-zoom-in">
+                <b>Zoom In</b>
+            </button>
+            <button type="submit" class="btn btn-large btn-zoom-reset">
+                <b>Reset Zoom</b>
+            </button>
+            <button type="submit" class="btn btn-large btn-fullscreen">
+                <b>Full screen</b>
+            </button>
+        </div>
+    </div>
+    <div class="module-body fullscreen-content">
+
+        {% for message in messages %}
+
+        <div class="alert {{ message.tags }}">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            {% if message.extra_tags %}
+            <strong><i class="icon-exclamation-sign icon"></i> {{ message.extra_tags|title }},
+            </strong>
+            {% endif %}
+            {{ message }}
+        </div>
+
+        {% endfor %}
+
+        <form action="/register/building_owner/request"
+              method="POST"
+              enctype="multipart/form-data"
+              id="registration_building_owner_form"
+              class="form-horizontal row-fluid" data-parsley-validate>
+            {% csrf_token %}
+            <h4>Palihug kompletoha ang imong mga detalye</h4>
+            <p>
+
+                Ania ka dinhi sa opisyal nga site sa sistema sa pagsubay sa covid nga gihimo sa
+                lungsod sa digos city ug giaprobahan sa mga departamento nga nagdumala sa pag-ila
+                mga tawo nga tingali adunay covid. nagaagi kini sa usa ka ligal nga proseso busa ang
+                kasayuran nga among makuha
+                gipanalipdan ug wala magamit alang sa mga katuyoan sa gawas.
+            </p>
+
+            <div class="docs-example">
+
+                <div class="control-group">
+                    <label class="control-label">
+                        <b>First name</b>
+                    </label>
+                    <div class="controls">
+                        <input data-title="Please input your first name"
+                               type="text"
+                               name="first_name"
+                               required
+                               placeholder="Una na ngalan"
+                               value="{{data.first_name}}"
+                               class="span7 tip">
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">
+                        <b>Last name</b>
+                    </label>
+                    <div class="controls">
+                        <input data-title="Please input your last name"
+                               type="text"
+                               name="last_name"
+                               required
+                               placeholder="Apilyedo"
+                               value="{{data.last_name}}"
+                               class="span7 tip">
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">
+                        <b>Phone number</b>
+                    </label>
+                    <div class="controls">
+                        <div class="input-prepend span9">
+                            <span class="add-on"><b>+63</b></span>
+                            <input type="text" required
+                                   class="ph-phone"
+                                   name="phone_number"
+                                   data-parsley-remote
+                                   data-parsley-nospaces
+                                   data-parsley-phnumberformat
+                                   data-parsley-trigger="focusout"
+                                   data-parsley-remote-validator='phone_number_exist'
+                                   data-parsley-errors-container=".help-inline"
+                                   data-parsley-remote-message="kining numero sa telepono naka rehistro na sa laing account."
+                                   value="{{data.phone_number}}"
+                                   placeholder="Phone number">
+                        </div>
+                        <span class="help-inline"></span>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">
+                        <b>Username</b>
+                    </label>
+                    <div class="controls">
+                        <input data-title="Please input your username"
+                               type="text"
+                               name="username"
+                               required
+                               placeholder="Please input your username"
+                               data-parsley-remote
+                               data-parsley-nospaces
+                               data-parsley-minlength="6"
+                               data-parsley-trigger="focusout"
+                               data-parsley-remote-validator='username_exist'
+                               data-parsley-remote-message="Dili available ang gipili na username."
+                               value="{{data.username}}"
+                               class="span7 tip">
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">
+                        <b>Password</b>
+                    </label>
+                    <div class="controls">
+                        <input data-title="Password"
+                               id="password"
+                               type="password"
+                               required=""
+                               name="password"
+                               placeholder="Password"
+                               class="span7 tip">
+                    </div>
+                </div>
+
+
+                <div class="control-group">
+                    <label class="control-label">
+                        <b>Confirm Password</b>
+                    </label>
+                    <div class="controls">
+                        <input data-title="Confirm Password"
+                               data-parsley-equalto="#password"
+                               type="password"
+                               required=""
+                               placeholder="Confirm Password"
+                               class="span7 tip">
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">
+                        <b>Date of Birth</b>
+                    </label>
+                    <div class="controls">
+                        <input data-title="Confirm Password"
+                               type="date"
+                               name="date_of_birth"
+                               required=""
+                               placeholder="Password"
+                               value="{{data.date_of_birth}}"
+                               class="span7 tip">
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">
+                        <b>Gender</b>
+                    </label>
+                    <div class="controls">
+
+                        {% for per in gender %}
+                        <label class="radio inline">
+                            <input type="radio" required name="gender"
+                                   value="{{per.0}}"
+                                   {% if forloop.counter == 1 %} checked="" {% endif %}>
+                            {{per.1}}
+                        </label>
+
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">
+                        <b>Establishment name</b>
+                    </label>
+                    <div class="controls">
+                        <input data-title="Pangalan sa establishmento"
+                               type="text"
+                               name="establishment_name"
+                               required
+                               placeholder="Pangalan sa establishmento"
+                               value="{{data.establishment_name}}"
+                               class="span7 tip">
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">
+                        <b>Barangay ug Purok</b>
+                    </label>
+                    <div class="controls">
+                        <select class="span7 tip" required name="purok">
+                            <option value="" selected disabled>Select barangay and purok
+                                (Required)
+                            </option>
+                            {% for per in purok %}
+                            <option value="{{per.id}}">
+                                {% if per.barangay %}
+                                {{per.barangay.name|lower|title}}, {{per.name|lower|title}}
+                                {% else %}
+                                {{per.name|lower|title}}
+                                {% endif %}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">
+                        <b>Street</b>
+                    </label>
+                    <div class="controls">
+                        <input data-title="Street"
+                               name="street"
+                               type="text"
+                               required
+                               placeholder="Street (Required)"
+                               value="{{data.street}}"
+                               class="span7 tip">
+                    </div>
+                </div>
+
+
+            </div>
+
+            <h4>Pag-ila</h4>
+            <p>
+                Tinoa ang imong pagtukod pinaagi sa paghatag usa ka balido nga id, permits o bisan
+                unsang mga dokumento nga nagpamatuod nga ang imong negosyo o institusyon tinuod ug
+                ligal.
+            </p>
+
+
+            <div class="docs-example">
+
+                <div class="control-group">
+                    <label class="control-label">
+                        <b>Palihug pagpili usa ka file (.img, .doc)</b>
+                    </label>
+                    <div class="controls">
+                        <input data-title="Please choose a file"
+                               required
+                               type="file"
+                               name="verification_file"
+                               accept="application/msword,
+                                                    pplication/pdf,
+                                                    image/*"
+                               class="span9 tip btn btn-large btn-block">
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="control-group">
+                <div class="controls">
+                    <button type="submit" class="btn btn-large btn-success">Submit Form</button>
+                </div>
+            </div>
+
+
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block plugins %}
+
+<script src="{% static 'plugins/jquery-input-mask/dist/jquery.mask.js' %}" type="text/javascript"></script>
+
+{% endblock %}

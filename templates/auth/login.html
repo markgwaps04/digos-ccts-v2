@@ -1,0 +1,92 @@
+﻿{% extends "auth/base_template_for_auth.html" %}
+
+{% load static %}
+
+
+{% block styles %}
+
+<style>
+    .main_container
+    {
+        width: 100%;
+        /* Firefox */
+        display: -moz-box;
+        -moz-box-pack: center;
+        -moz-box-align: center;
+        /* Safari and Chrome */
+        display: -webkit-box;
+        -webkit-box-pack: center;
+        -webkit-box-align: center;
+        /* W3C */
+        display: box;
+        box-pack: center;
+        box-align: center;
+    }
+
+    .module-login { margin-top:0 }
+
+
+
+
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+<div class="module module-login span5 fullscreen-container">
+    <form class="form-vertical" action="/login/request" method="post">
+        {% csrf_token %}
+        <div class="module-head bg-success">
+            <h3>Sign In</h3>
+        </div>
+        <div class="module-body">
+
+            {% for message in messages %}
+
+            <div class="alert {{ message.tags }}">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                {% if message.extra_tags %}
+                <strong><i class="icon-exclamation-sign icon"></i> {{ message.extra_tags|title }},
+                </strong>
+                {% endif %}
+                {{ message }}
+            </div>
+
+            {% endfor %}
+
+            <div class="control-group">
+                <div class="controls row-fluid">
+                    <input class="span12" type="text" required name="username"
+                           placeholder="Username">
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls row-fluid">
+                    <input class="span12" type="password" required name="password" placeholder="Password">
+                </div>
+            </div>
+
+            <hr>
+
+            <p class="text-center">
+                <b>
+                    Dont have an account ? <a href="/register">Create an account</a>
+                </b>
+            </p>
+
+        </div>
+        <div class="module-foot">
+            <div class="control-group">
+                <div class="controls clearfix">
+                    <button type="submit" class="btn btn-primary pull-right btn-large">Login</button>
+                    <a href="#">Forgot Password?</a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+{% endblock %}
+

@@ -1,0 +1,170 @@
+﻿{% extends "auth/base_template_for_auth.html" %}
+
+{% load static %}
+
+{% block styles %}
+
+<link type="text/css" href="{% static 'node_modules/smartwizard/dist/css/smart_wizard_all.css' %}" rel="stylesheet">
+
+
+{% endblock %}
+
+{% block styles_after %}
+
+<style>
+    .add-on, input { height : inherit !important }
+    #smartwizard .tab-content {
+        height : auto !important;
+        width : 100%;
+    }
+    .tab-pane { width :100% !important }
+
+
+
+
+
+
+
+
+
+
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="module fullscreen-container" id="household">
+
+    <div class="module-head bg-green">
+        <h3>Account Registration</h3>
+        <div class="right-action hide_mobile">
+            <button type="submit" class="btn btn-large btn-zoom-in">
+                <b>Zoom In</b>
+            </button>
+            <button type="submit" class="btn btn-large btn-zoom-reset">
+                <b>Reset Zoom</b>
+            </button>
+            <button type="submit" class="btn btn-large btn-fullscreen">
+                <b>Full screen</b>
+            </button>
+        </div>
+    </div>
+    <div class="module-body fullscreen-content">
+
+        {% for message in messages %}
+
+        <div class="alert {{ message.tags }}">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            {% if message.extra_tags %}
+            <strong><i class="icon-exclamation-sign icon"></i> {{ message.extra_tags|title }},
+            </strong>
+            {% endif %}
+            {{ message }}
+        </div>
+
+        {% endfor %}
+
+        <h4>Personal na mga detalye, palihug kompletoha ang imong mga detalye</h4>
+        <p>
+
+            Ania ka dinhi sa opisyal nga site sa sistema sa pagsubay sa covid nga gihimo sa
+            lungsod sa digos city ug giaprobahan sa mga departamento nga nagdumala sa pag-ila
+            mga tawo nga tingali adunay covid. nagaagi kini sa usa ka ligal nga proseso busa ang
+            kasayuran nga among makuha
+            gipanalipdan ug wala magamit alang sa mga katuyoan sa gawas.
+        </p>
+        <br/>
+        <div class="form-horizontal">
+
+            <div class="control-group ">
+                <label class="control-label">
+                    <b>Apply for</b>
+                </label>
+                <div class="controls custom" data-toggle="buttons-radio">
+                    <a data-toggle="tab" href="#resident"
+                       class="btn-pill btn active">
+                        <b>Resident of Digos</b>
+                    </a>
+                    <a data-toggle="tab" href="#building_owner"
+                       class="btn-pill btn">
+                        <b>Establishment Owner</b>
+                    </a>
+<!--                    <a data-toggle="tab" href="#working"-->
+<!--                       class="btn-pill btn">-->
+<!--                        <b>Working Pass</b>-->
+<!--                    </a>-->
+<!--                    <a data-toggle="tab" href="#visitor"-->
+<!--                       class="btn-pill btn">-->
+<!--                        <b>Visitor Pass</b>-->
+<!--                    </a>-->
+                </div>
+            </div>
+
+            <div class="control-group">
+
+                <div class="tab-content overlay-container">
+
+                    <div class="overlay-spinner">
+                        <div class="icon">
+                            <i class="fa-spin fa fa-spinner"></i>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane active" id="resident">
+
+                        {% include "auth/include/include_sign_up_household.html" %}
+
+
+                    </div>
+
+                    <div class="tab-pane" id="building_owner">
+
+                        {% include "auth/include/include_sign_up_establishment.html" %}
+
+                    </div>
+
+                    <div class="tab-pane" id="working">
+
+                        {% include "auth/include/include_sign_up_working.html" %}
+
+
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+</div>
+
+
+{% endblock %}
+
+
+{% block plugins %}
+
+<script src='https://www.google.com/recaptcha/api.js?onload=CaptchaCallback&render=explicit' async defer></script>
+<script src="{% static 'plugins/jquery-input-mask/dist/jquery.mask.js' %}" type="text/javascript"></script>
+
+<script src="{% static 'node_modules/smartwizard/dist/js/jquery.smartWizard.js' %}"></script>
+
+<script>
+
+    var CaptchaCallback = function() {
+        var captchas = document.getElementsByClassName("g-recaptcha");
+        for(var i = 0; i < captchas.length; i++) {
+            grecaptcha.render(captchas[i], {'sitekey' : '{{GOOGLE_RECAPTCHA_SITE_KEY}}'});
+        }
+    };
+
+    CaptchaCallback();
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,50 @@
+﻿{% extends "auth/base_template_for_auth.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="module fullscreen-container">
+
+    <div class="module-head bg-green">
+        <h3><i class="fa fa-paper-plane"></i> &nbsp; Request Send</h3>
+        <div class="right-action hide_mobile">
+            <button type="submit" class="btn btn-large btn-zoom-in">
+                <b>Zoom In</b>
+            </button>
+            <button type="submit" class="btn btn-large btn-zoom-reset">
+                <b>Reset Zoom</b>
+            </button>
+            <button type="submit" class="btn btn-large btn-fullscreen">
+                <b>Full screen</b>
+            </button>
+        </div>
+    </div>
+    <div class="module-body fullscreen-content">
+
+        <h4>(Why should I get Verified?) Ngano nga kinahanglan nako mapanghimatuud?</h4>
+        <p>
+            Ang proseso sa pag-verify (nailhan usab nga proseso sa Know-Your-User process)
+            gikinahanglan sa City Information and Communication Office. Kini usa "one-time" nga proseso sa
+            pag-validate nga among buhaton
+            nga ginasigurado nga ikaw usa ka tinuod ug lehitimo nga nanag-iya sa building. sa
+            pagtimo magpadala kami ug mensahe o tawagan namo ang imong gihatag na numero arun sa
+            karagdagan na impormasyon.
+        </p>
+
+        <br/>
+
+        <a href="#" class="a-btn" style="margin: 0 auto;">
+            <span class="a-btn-symbol"><i class="fa fa-download"></i></span>
+            <span class="a-btn-text">Download Now</span>
+            <span class="a-btn-slide-text">Android</span>
+        </a>
+
+        <br/>
+
+    </div>
+
+</div>
+
+{% endblock %}
+

@@ -1,0 +1,399 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block styles %}
+<link type="text/css" href="{% static 'bower_components/jsgrid/dist/jsgrid.css' %}" rel="stylesheet">
+<link type="text/css" href="{% static 'bower_components/jsgrid/dist/jsgrid-theme.css' %}" rel="stylesheet">
+<link type="text/css" href="{% static 'node_modules/jquery-steps/dist/jquery-steps.css' %}" rel="stylesheet">
+<link type="text/css" href="{% static 'plugins/jquery-modal/jquery.modal.css' %}" rel="stylesheet">
+<link type="text/css" href="{% static 'plugins/vex/dist/css/vex.css' %}" rel="stylesheet">
+<link type="text/css" href="{% static 'plugins/vex/dist/css/vex-theme-top.css' %}" rel="stylesheet">
+
+{% endblock %}
+
+{% block before_main %}
+
+<div class="ui-theme-settings">
+    <div class="theme-settings__inner">
+        <div class="scrollbar-container ps ps--active-y">
+            <div class="theme-settings__options-wrapper">
+                <div class="themeoptions-heading">
+                    <div class="widget-content p-0">
+                        <div class="widget-content-wrapper">
+                            <div class="widget-content-left mr-3">
+                                <div class="widget-content-left">
+                                    <i class="pe-7s-search" style="font-size:40px"></i>
+                                </div>
+                            </div>
+                            <div class="widget-content-left flex2">
+                                <div class="widget-heading">
+                                    Filter Results
+                                </div>
+                                <div class="widget-subheading opacity-7 f-sm-1">
+                                    Click filter button to close this sidebar
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-3">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="app-main__inner">
+
+    <div class="app-page-title">
+        <div class="page-title-wrapper">
+            <div class="page-title-icon" style="width : auto; height: auto;">
+                <!--                    <i class="pe-7s-info icon-gradient bg-plum-plate"> </i>-->
+
+                <div class="btn-group" style="width: 100%;">
+                    <a aria-haspopup="true" aria-expanded="false" class="p-0 btn">
+                        <img width="76" class="rounded-circle" src="/static/images/digos_icon.png" alt="">
+                    </a>
+                </div>
+
+            </div>
+            <div class="page-title-heading">
+                <div>
+                    Welcome to Digos City Covid Contact Tracing
+                    <div class="page-title-subheading">
+                        This is our official contact tracing management system. At the moment all
+                        information is
+                        monitored by City
+                        Information Office (ICT)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="inner_container">
+
+        {% for message in messages %}
+
+        <div class="alert {{ message.tags }}" style="width:100%">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            {% if message.extra_tags %}
+
+            <h5>
+                <strong>
+                    <i class="icon-exclamation-sign icon"></i>
+                    {{ message.extra_tags|title }}
+                </strong>
+            </h5>
+
+            {% else %}
+
+            <h5>
+                <strong>
+                    <i class="icon-exclamation-sign icon"></i>
+                    {{ message.extra_tags|title }}
+                </strong>
+            </h5>
+
+            {% endif %}
+
+            {{ message }}
+        </div>
+
+        {% endfor %}
+
+        <div class="row">
+
+            <div class="col-md-3 mb-3">
+
+                <div class="main-card mb-3 card p-sm">
+                    <div class="col">
+                        <ul class="nav flex-column">
+                            <li class="nav-item-header nav-item">Pages</li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-link-icon fa fa-download"> </i>
+                                    <span>Download official app</span>
+                                </a>
+                            </li>
+                             <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-link-icon fa fa-envelope"> </i>
+                                    <span>Message us</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-9">
+                <div class="mb-3 card text-white bg-success" id="main">
+                    <div class="card-header p-20">
+                        <button type="button" data-toggle="tooltip" id="full_screen" title="" data-placement="bottom"
+                                class="btn-shadow mr-2 btn-lg btn btn-primary" data-original-title="Full screen"
+                                aria-describedby="tooltip3405">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                        <i class="fa fa-expand fa-w-20"></i>
+                    </span> Full screen
+                        </button>
+                        <button type="button" data-toggle="tooltip" title="" data-placement="bottom"
+                                class="btn-shadow mr-2 btn-lg btn btn-light btn-open-options"
+                                data-original-title="Filter"
+                                aria-describedby="tooltip3405">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                        <i class="fa fa-business-time fa-w-20"></i>
+                    </span>Filter
+                        </button>
+                        <button type="button" data-toggle="tooltip" title="" data-placement="bottom"
+                                class="btn-shadow mr-2 btn-lg btn btn-light" data-original-title="Filter logs"
+                                aria-describedby="tooltip3405">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                        <i class="fa fa-business-time fa-w-20"></i>
+                    </span>Export as CSV
+                        </button>
+                        <div class="btn-actions-pane-right">
+                            <form id="search" class="inline">
+                                <div class="search-wrapper active no-width">
+                                    <div class="input-holder bg-white">
+                                        <input type="text" class="search-input" name="search"
+                                               placeholder="Type to search">
+                                        <button type="button" class="search-icon"><span></span></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="card-header
+                     bg-tempting-azure hide
+                     f-normal p-4">
+                        <div class="widget-content p-0">
+                            <div class="widget-content-wrapper">
+                                <div class="widget-content-left">
+                                    <div class="btn-group">
+                                        <a aria-haspopup="true" aria-expanded="false" class="p-0 btn">
+                                            <i class="pe-7s-search" style="font-size:40px"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="widget-content-left  ml-3 header-user-info">
+                                    <div class="widget-heading text-default">
+                                        <b>Filtering the results</b>
+                                    </div>
+                                    <div class="widget-subheading text-default">
+                                        You seeing this because the table is been filter.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-body bg-white text-default">
+
+                        <div class="overlay-spinner">
+                            <div class="icon">
+                                <i class="fa-spin fa fa-spinner"></i>
+                            </div>
+                        </div>
+
+                        <div class="jsgrid grid-cus main">
+
+                            <div class="inner_content no_display">
+                                <div>
+                                    <h4>No display</h4>
+                                    <p><span>We cant find any information or source</span></p>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="card-footer">
+                        <div class="widget-content-left full-width">
+                            <span class="pagination"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block outside %}
+
+
+<div class="modal add_log"
+     role="dialog"
+     aria-labelledby="add_log"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div class="overlay-spinner">
+                <div class="icon">
+                    <i class="fa-spin fa fa-spinner"></i>
+                </div>
+            </div>
+
+            <div class="modal-header bg-success">
+                <h5 class="modal-title" id="exampleModalLongTitle">Add new log</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
+            <div class="modal-header bg-light-warning modal-header-alert"></div>
+
+            <div class="modal-body no-padding" style="min-height:374px">
+                <div id="wizard-steps">
+                    <div class="step-app">
+                        <ul class="step-steps">
+                            <li class="text-center"><a href="#step1">Identification</a></li>
+                            <li class="text-center"><a href="#step2">Search</a></li>
+                            <li class="text-center"><a href="#step3">Fill details</a></li>
+                        </ul>
+                        <div class="step-content no-padding">
+
+                            <div class="step-tab-panel active" id="step1">
+
+                                <form class="form-highlight" id="step1_form" data-parsley-validate>
+
+                                    <div class="card-body">
+
+                                        <div class="position-relative row form-group">
+                                            <label class="col-sm-2 col-form-label">
+                                                First name
+                                                <span class="red inline">*</span>
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input type="text"
+                                                       name="firstname"
+                                                       placeholder="Required" class="form-control" required="">
+                                            </div>
+
+                                        </div>
+
+                                        <div class="position-relative row form-group">
+
+                                            <label class="col-sm-2 col-form-label">
+                                                Last name
+                                                <span class="red inline">*</span>
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input type="text"
+                                                       placeholder="Required"
+                                                       name="lastname" class="form-control" required="">
+                                            </div>
+
+                                        </div>
+
+                                        <div class="position-relative row form-group">
+
+                                            <label class="col-sm-2 col-form-label">
+                                                Middle name
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input type="text"
+                                                       placeholder="Optional"
+                                                       name="middlename" class="form-control">
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-focus btn-lg">
+                                            Search
+                                        </button>
+                                    </div>
+
+                                </form>
+
+                            </div>
+
+                            <div class="step-tab-panel" id="step2">
+
+                                <div class="card no-padding no-border">
+                                    <div class="card-header f-normal bg-light">
+                                        If a person is not on the list click the right button
+                                        <div class="btn-actions-pane-right">
+                                            <form class="form-highlight" id="step2_new">
+                                                <button type="submit" class="btn btn-primary btn-lg mr-2">
+                                                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                        <i class="fa fa-business-time fa-w-20"></i>
+                                                    </span>
+                                                    <b>New visitor</b>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <form class="form-highlight" id="step2_form">
+                                            <div class="jsgrid grid-cus"></div>
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <div class="modal-footer">
+                                    <div class="widget-content-left full-width">
+                                        <span id="pagination"></span>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="step-tab-panel" id="step3">
+                                <div class="card no-padding">
+
+                                    <div class="inner_content no_display p20">
+                                        <div>
+                                            <h4>No display</h4>
+                                            <p>
+                                                <span>
+                                                    You haven't choose your action on previous step
+                                                </span>
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block scripts %}
+<script src="{% static 'node_modules/jquery-steps/dist/jquery-steps.js' %}"></script>
+<script src="{% static 'bower_components/jsgrid/dist/jsgrid.js' %}"></script>
+<script src="{% static 'scripts/home/modal_script.js' %}"></script>
+<script src="{% static 'plugins/vex/dist/js/vex.combined.js' %}"></script>
+<script src="{% static 'scripts/home/home.js' %}"></script>
+<!--<script src="{% static 'plugins/jquery-modal/jquery.modal.js' %}"></script>-->
+
+{% endblock %}

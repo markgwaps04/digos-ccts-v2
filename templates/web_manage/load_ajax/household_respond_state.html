@@ -1,0 +1,111 @@
+<div class="modal hide cus fullscreen-container"
+     data-backdrop="static" data-keyboard="false" style="top:10px">
+    <div class="modal-backdrop"></div>
+    <div class="overlay-spinner">
+        <div class="icon">
+            <i class="fa-spin fa fa-spinner"></i>
+        </div>
+    </div>
+    <div class="modal-dialog modal-xl fullscreen-content">
+        <div class="modal-content">
+
+            {% if data.is_confirm == 1 %}
+
+            <div class="modal-header bg-green state_alert when_approved">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3 class="modal-title"><i class="fa fa-check-circle"></i> &nbsp; Approved request</h3>
+            </div>
+
+            {% elif data.is_confirm == 2 %}
+
+            <div class="modal-header bg-warning state_alert when_declined">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3 class="modal-title"><i class="fa fa-times"></i> &nbsp; Declined request</h3>
+            </div>
+
+            {% endif %}
+
+            <div class="modal-header bg-light no-padding">
+
+                <div class="media stream cus">
+                    <a href="/household/home" class="media-avatar medium pull-left">
+                        <img src="/static/eadmin/images/email.svg">
+                    </a>
+                    <div class="media-body">
+                        <div class="stream-headline">
+                            <div class="pull-left">
+                                <h4 class="stream-author">
+                                    <a href="/home">{{data.first_name}} {{data.last_name}}</a>
+                                </h4>
+
+                                <div class="stream-text">
+                                    <i>The verification file is no longer available</i>
+                                </div>
+
+                                <div class="stream-text">
+                                    {{data.get_age}} years old of age
+                                </div>
+                                <div class="stream-text">
+                                    {{data.relationship.name|title}}, {{data.get_gender_display}}
+                                </div>
+                                <div class="stream-text">
+                                    Birth date, {{data.date_added}}
+                                </div>
+                            </div>
+                        </div><!--/.stream-headline-->
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="modal-header bg-sky-blue">
+                <h5 class="modal-title no-margin">Household Profile</h5>
+            </div>
+
+            <div class="modal-header bg-light no-padding">
+
+                <div class="media stream cus">
+                    <a href="/household/home" class="media-avatar medium pull-left">
+                        <img src="/static/eadmin/images/woman.svg">
+                    </a>
+                    <div class="media-body">
+                        <div class="stream-headline">
+                            <h4 class="stream-author">
+                                <a href="/home">
+                                    {{data.household_profile.user.get_full_name}}
+                                </a>
+                            </h4>
+                            <div class="stream-text">
+                                <b>{{data.get_gender_display}}, {{data.get_age}} yrs old</b>
+                            </div>
+                            <div class="stream-text">
+                                {% if data.household_profile.barangay %}
+
+                                <b>{{data.household_profile.purok.barangay.name}}
+                                    {{data.household_profile.purok.name}},
+                                    {{data.household_profile.street|title}}</b>
+
+                                {% else %}
+
+                                <b>{{data.household_profile.purok.name}},
+                                    {{data.household_profile.street|title}}</b>
+
+                                {% endif %}
+                            </div>
+                            <div class="stream-text">
+                                <b>+63 {{data.household_profile.phone_number}}</b>
+                            </div>
+                            <div class="stream-text">
+                                <b>Account created on, {{data.household_profile.date_created}}</b>
+                            </div>
+                            <div class="stream-text">
+                                <b>{{data.household_profile.no_household}}</b> household members
+                            </div>
+                        </div><!--/.stream-headline-->
+                    </div>
+                </div>
+
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>

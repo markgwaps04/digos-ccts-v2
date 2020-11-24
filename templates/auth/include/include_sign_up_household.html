@@ -1,0 +1,289 @@
+<form action="/register/household/request"
+      method="POST"
+      id="registration_household_form"
+      enctype="multipart/form-data"
+      class="form-horizontal row-fluid form-register" data-parsley-validate>
+    {% csrf_token %}
+
+    <input type="hidden" name="type" value="citizens">
+
+    <div class="docs-example no_m_t">
+
+        <div class="control-group">
+            <label class="control-label">
+                <b>First name</b>
+            </label>
+            <div class="controls">
+                <input data-title="Please input your first name"
+                       type="text"
+                       name="resident_first_name"
+                       required
+                       placeholder="Una na ngalan"
+                       value="{{data.first_name}}"
+                       class="span7 tip">
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label">
+                <b>Last name</b>
+            </label>
+            <div class="controls">
+                <input data-title="Please input your last name"
+                       type="text"
+                       name="resident_last_name"
+                       required
+                       placeholder="Apilyedo"
+                       value="{{data.last_name}}"
+                       class="span7 tip">
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label">
+                <b>Contact number</b>
+            </label>
+            <div class="controls">
+                <div class="input-prepend span9">
+                    <span class="add-on"><b>+63</b></span>
+                    <input type="text" required
+                           class="ph-phone"
+                           name="phone_number"
+                           data-parsley-remote
+                           data-parsley-nospaces
+                           data-parsley-phnumberformat
+                           data-parsley-trigger="focusout"
+                           data-parsley-remote-validator='check_phone_number_exist'
+                           data-parsley-errors-container=".help_household"
+                           data-parsley-remote-message="kining numero sa telepono naka rehistro na sa laing account."
+                           value="{{data.phone_number}}"
+                           placeholder="Phone number">
+                </div>
+                <span class="help_household" style="display:inline-block;"></span>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label">
+                <b>Username</b>
+            </label>
+            <div class="controls">
+                <input data-title="Please input your username"
+                       type="text"
+                       name="username"
+                       required
+                       placeholder="Please input your username"
+                       data-parsley-remote
+                       data-parsley-nospaces
+                       data-parsley-minlength="6"
+                       data-parsley-trigger="focusout"
+                       data-parsley-remote-validator='username_exist'
+                       data-parsley-remote-message="Dili available ang gipili na username."
+                       value="{{data.username}}"
+                       class="span7 tip">
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label">
+                <b>Password</b>
+            </label>
+            <div class="controls">
+                <input data-title="Password"
+                       id="password"
+                       type="password"
+                       required=""
+                       name="resident_password"
+                       placeholder="Password"
+                       class="span7 tip">
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label">
+                <b>Confirm Password</b>
+            </label>
+            <div class="controls">
+                <input data-title="Confirm Password"
+                       data-parsley-equalto="#password"
+                       type="password"
+                       required=""
+                       placeholder="Confirm Password"
+                       class="span7 tip">
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label">
+                <b>Date of Birth</b>
+            </label>
+            <div class="controls">
+                <input data-title="Confirm Password"
+                       type="date"
+                       name="resident_date_of_birth"
+                       required=""
+                       placeholder="Password"
+                       value="{{data.date_of_birth}}"
+                       class="span7 tip">
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label">
+                <b>Gender</b>
+            </label>
+            <div class="controls">
+
+                {% for per in gender %}
+                <label class="radio inline">
+                    <input type="radio" required name="resident_gender"
+                           value="{{per.0}}"
+                           {% if forloop.counter == 1 %} checked="" {% endif %}>
+                    {{per.1}}
+                </label>
+
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label">
+                <b>Province</b>
+            </label>
+            <div class="controls">
+                 <select class="span7 tip address" required name="resident_province">
+                    <option value="" selected disabled>Select Province (Required)
+                    </option>
+                    {% for per in province %}
+                    <option value="{{per.id}}">
+                        {{per.name|lower|title}}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label">
+                <b>City/Municipality</b>
+            </label>
+            <div class="controls">
+                <input data-title="Street"
+                       name="resident_street"
+                       type="text"
+                       required
+                       placeholder="Street (Required)"
+                       value="{{data.street}}"
+                       class="span7 tip">
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label">
+                <b>Street</b>
+            </label>
+            <div class="controls">
+                <input data-title="Street"
+                       name="resident_street"
+                       type="text"
+                       required
+                       placeholder="Street (Required)"
+                       value="{{data.street}}"
+                       class="span7 tip">
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label">
+                <b>Barangay</b>
+            </label>
+            <div class="controls">
+                <select class="span7 tip barangay_resident" required name="resident_barangay">
+                    <option value="" selected disabled>Select barangay (Required)
+                    </option>
+                    {% for per in barangay %}
+                    <option value="{{per.id}}">
+                        {{per.name|lower|title}}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label">
+                <b>Purok</b>
+            </label>
+            <div class="controls">
+                <select id="purok" class="span7 tip" required name="resident_purok">
+                    <option class="default" value="" selected disabled>Select barangay and purok
+                        (Required)
+                    </option>
+
+                    {% for per in purok %}
+                    <option value="{{per.id}}">
+                        {% if per.barangay %}
+                        {{per.barangay.name|lower|title}}, {{per.name|lower|title}}
+                        {% else %}
+                        {{per.name|lower|title}}
+                        {% endif %}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+
+    </div>
+
+    <h4>Pag-ila</h4>
+    <p>
+        Tinoa ang imong pagtukod pinaagi sa paghatag usa ka balido nga id, permits o bisan
+        unsang mga dokumento nga nagpamatuod nga ikaw residente ug namolopyo sa digos
+    </p>
+
+    <div class="docs-example">
+
+        <div class="control-group">
+            <label class="control-label">
+                <b>Residential identification</b>
+            </label>
+            <div class="controls">
+                <input data-title="Please choose a file" required="" type="file" name="verification_file"
+                       accept="application/msword,application/pdf,image/*" class="span9 tip btn btn-large btn-block">
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label">
+                <b>Profile</b>
+            </label>
+            <div class="controls">
+                <input data-title="Please choose a file" required="" type="file" name="profile"
+                       accept="image/*" class="span9 tip btn btn-large btn-block">
+            </div>
+        </div>
+
+    </div>
+
+    <div class="control-group">
+        <label class="control-label">
+            <b>*</b>
+        </label>
+        <div class="controls">
+            <div class="g-recaptcha" sitekey="{{GOOGLE_RECAPTCHA_SITE_KEY}}"
+                 data-sitekey="{{GOOGLE_RECAPTCHA_SITE_KEY}}"></div>
+        </div>
+
+    </div>
+
+    <div class="control-group">
+        <div class="controls">
+            <button type="submit" form="registration_household_form"
+                    class="btn btn-large btn-success">
+                Submit Form
+            </button>
+        </div>
+    </div>
+
+</form>

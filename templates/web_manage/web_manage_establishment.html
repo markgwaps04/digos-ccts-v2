@@ -1,0 +1,274 @@
+﻿{% extends "web_manage/base_template_for_manage.html" %}
+
+{% load static %}
+
+{% block styles %}
+
+<link type="text/css" href="{% static 'node_modules/jsgrid/dist/jsgrid.css' %}" rel="stylesheet">
+<link type="text/css" href="{% static 'node_modules/jsgrid/dist/jsgrid-theme.css' %}" rel="stylesheet">
+
+
+{% endblock %}
+
+{% block styles_after %}
+
+<style>
+    .add-on, input { height : inherit !important }
+    #smartwizard .tab-content {
+        height : auto !important;
+        width : 100%;
+    }
+    .tab-pane { width :100% !important }
+    .btn-box.btn-success.biege  { background : #5bc0de2e !important }
+    .btn-box img { width:100% }
+    .btn-box b {
+        font-size: 16px;
+        font-weight:bold;
+    }
+    form.cus .control-group
+    {
+        margin:0;
+        padding: 3px;
+        margin-bottom: 1px;
+    }
+    select option { font-size: 14px !important }
+    .alert { margin-bottom:0 }
+
+    .zoom_in_trigger {
+        position: absolute;
+        width: 68%;
+        left: 209px;
+        /* margin: 0 auto; */
+        top: 104px;
+    }
+
+    .view_attachment
+    {
+        margin-top: 22px;
+        /* margin-right: 21px; */
+        margin-right: 12px;
+    }
+
+    a.view_attachment i,
+    button i
+    {
+        color: white !important;
+        font-size: 15px !important;
+    }
+    .state_alert.bg-warning { background-color : #fdfdbf; }
+
+    .modal { text-align: initial; }
+</style>
+
+{% endblock %}
+
+
+{% block full_content %}
+
+<div class="span10 center main_container">
+    <div class="content">
+
+        <div class="module fullscreen-container" id="household">
+            <div class="module-head bg-sky-blue">
+                <h3>Digos Covid Tracing System Admin</h3>
+                <div class="right-action hide_mobile">
+                    <button type="submit" class="btn btn-large btn-zoom-in">
+                        <b>Zoom In</b>
+                    </button>
+                    <button type="submit" class="btn btn-large btn-zoom-reset">
+                        <b>Reset Zoom</b>
+                    </button>
+                    <button type="submit" class="btn btn-large btn-fullscreen">
+                        <b>Full screen</b>
+                    </button>
+                </div>
+            </div>
+            <div class="module-body fullscreen-content">
+
+
+                {% for message in messages %}
+
+                <div class="alert {{ message.tags }}">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    {% if message.extra_tags %}
+                    <strong><i class="icon-exclamation-sign icon"></i> {{ message.extra_tags|title }},
+                    </strong>
+                    {% endif %}
+                    {{ message }}
+                </div>
+
+                {% endfor %}
+
+                <div class="btn-controls">
+
+                    <div class="btn-box-row row-fluid">
+
+                        <div class="module message">
+                            <div class="module-option clearfix">
+                                <div class="pull-left">
+                                    <h4>Establishment request</h4>
+                                </div>
+                                <div class="pull-right">
+                                    <a href="/home" class="btn btn-primary btn-large">Back to home</a>
+                                </div>
+                            </div>
+                            <div class="module-body table">
+                                <div class="jsgrid cus household_request_list">
+                                    <div class="inner_content no_display">
+                                        <div>
+                                            <h4>No household request found</h4>
+                                            <p>
+                                                <span>
+                                                    We cant find any information or source
+                                                </span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="module-foot">
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="modal fade hide fullscreen-container" id="myModal" style="top:10px">
+                <div class="modal-backdrop"></div>
+                <div class="modal-dialog modal-xl fullscreen-content">
+                    <div class="modal-content">
+                        <div class="modal-header bg-success">
+                            <div class="pull-right">
+                                <button type="button" class="btn btn-default btn-fullscreen">
+                                    Full screen
+                                </button>
+                            </div>
+                            <h3 class="modal-title">Add family members</h3>
+                        </div>
+
+                        <form action="/household/family/add/request"
+                              method="post"
+                              enctype="multipart/form-data"
+                              class="form-horizontal row-fluid cus"
+                              data-parsley-validate>
+                            {% csrf_token %}
+
+                            <input type="hidden" value="{{household_profile.id}}" name="household_profile">
+
+                            <div class="modal-body">
+
+                                <h4>Personal na mga detalye</h4>
+
+                                <div class="docs-example">
+
+                                    <div class="control-group">
+                                        <div class="span6">
+                                            <label>
+                                                <b>First name</b>
+                                            </label>
+                                            <input type="text" required name="first_name" class="form-control span12"
+                                                   placeholder="Example input placeholder">
+                                        </div>
+                                        <div class="span6">
+                                            <label>
+                                                <b>Last name</b>
+                                            </label>
+                                            <input type="text" required name="last_name" class="form-control span12"
+                                                   placeholder="Example input placeholder">
+                                        </div>
+                                    </div>
+
+                                    <div class="control-group">
+
+                                        <div class="span6">
+                                            <label>
+                                                <b>Gender</b>
+                                            </label>
+                                            <label class="radio inline">
+                                                <input type="radio" required="" name="gender" value="0" checked=""
+                                                       data-parsley-multiple="gender">
+                                                Male
+                                            </label>
+
+
+                                            <label class="radio inline">
+                                                <input type="radio" required="" name="gender" value="1"
+                                                       data-parsley-multiple="gender">
+                                                Female
+                                            </label>
+                                        </div>
+
+                                        <div class="span6">
+                                            <label>
+                                                <b>Birth date</b>
+                                            </label>
+                                            <input type="date" name="date_of_birth" required class="form-control span12"
+                                                   placeholder="Example input placeholder">
+                                        </div>
+
+                                    </div>
+
+                                    <div class="control-group">
+                                        <div class="span12">
+                                            <label>
+                                                <b>Relationship</b>
+                                            </label>
+                                            <select name="relationship" class="form-control span12">
+                                                <option selected disabled value="">
+                                                    Please select relationship of the head (Required)
+                                                </option>
+                                                {% for per in relationship %}
+                                                <option value="{{per.id}}">{{per.name}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <h4>Pag-ila</h4>
+                                <p>
+                                    Paghatag usa ka balido nga id, permits o bisan
+                                    unsang mga dokumento. eg. student id, birth certificat.
+                                </p>
+
+                                <div class="control-group">
+                                    <input required type="file" name="verification_file"
+                                           accept="application/msword,application/pdf,image/*"
+                                           class="span12 btn btn-large btn-block">
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button"
+                                        class="btn btn-default"
+                                        data-dismiss="modal">Close
+                                </button>
+                                <button type="submit" class="btn btn-primary">Save Changes</button>
+                            </div>
+
+                        </form>
+
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+
+        </div>
+
+
+    </div><!--/.content-->
+</div><!--/.span9-->
+
+{% endblock %}
+
+
+{% block plugins %}
+
+<script src="{% static 'node_modules/jsgrid/dist/jsgrid.js' %}"></script>
+<script src="{% static 'scripts/admin/establishment_request.js' %}"></script>
+
+{% endblock %}

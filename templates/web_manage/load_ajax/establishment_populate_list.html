@@ -1,0 +1,144 @@
+<table class="table table-message" item_count="{{itemCount}}">
+    <tbody>
+    <tr class="heading ">
+        <td class="cell-icon hidden-phone hidden-tablet" style="width:5%">
+        </td>
+        <td class="cell-title" style="width:30%">
+            Establishment name
+        </td>
+        <td class="cell-time hidden-phone hidden-tablet" style="width:10%">
+            Establishment email
+        </td>
+        <td class="cell-status" style="width:15%">
+            Date added
+        </td>
+        <td class="cell-status" style="width:25%">
+            Action
+        </td>
+    </tr>
+
+
+    {% for per in data %}
+
+    <tr class="unread starred">
+        <td class="cell-icon hidden-phone hidden-tablet" style="width:2%">
+            <i class="icon-star"></i>
+        </td>
+        <td class="cell-title" style="width:30%">
+            <a href="#modal{{forloop.counter}}" data-toggle="modal">
+                {{per.establishment_name|lower|title}}
+            </a>
+        </td>
+        <td class="cell-time hidden-phone hidden-tablet" style="width:25%">
+            {{per.user.email}}
+        </td>
+        <td class="cell-status text-error" style="width:15%">
+            {{per.date_created}}
+        </td>
+        <td class="cell-title" style="width:20%;text-align:center">
+            <a href="#modal{{forloop.counter}}" data-toggle="modal" class="btn btn-block btn-info">
+                <b>View</b>
+            </a>
+
+            <div class="modal hide cus fullscreen-container"
+                 data-backdrop="static" data-keyboard="false"
+                 id="modal{{forloop.counter}}" style="top:10px">
+                <div class="modal-backdrop"></div>
+                <div class="overlay-spinner">
+                    <div class="icon">
+                        <i class="fa-spin fa fa-spinner"></i>
+                    </div>
+                </div>
+                <div class="modal-dialog modal-xl fullscreen-content">
+                    <div class="modal-content">
+
+                        <div class="modal-header bg-sky-blue state_alert when_pending">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h3 class="modal-title">Confirmation</h3>
+                        </div>
+
+                        <div class="modal-header bg-light no-padding">
+
+                            <div class="media stream cus">
+                                <a href="/media/{{per.profile}}" target="_blank" class="media-avatar medium pull-left">
+                                    <img src="/media/{{per.profile}}">
+                                </a>
+                                <div class="media-body">
+                                    <div class="stream-headline">
+                                        <div class="pull-left" style="max-width:55%">
+                                            <h4 class="stream-author">
+                                                <a href="/home">{{per.establishment_name|lower|title}}</a>
+                                            </h4>
+                                            <div class="stream-text">
+                                                <b><a href="#">{{per.user.email}}</a></b>
+                                            </div>
+                                            <div class="stream-text">
+                                                <b>Purok, </b> {{per.purok.name|lower|title}}
+                                            </div>
+                                            <div class="stream-text">
+                                                <b>Barangay, </b> {{per.purok.barangay.name|lower|title}}
+                                            </div>
+                                            <div class="stream-text">
+                                                <b>Account created</b>, {{per.date_created}}
+                                            </div>
+                                        </div>
+                                        <div class="pull-right">
+                                            <a target="_blank" href="/media/{{per.verification_file}}"
+                                               class="btn btn-primary view_attachment">
+                                                <i class="icon-paper-clip"></i> &nbsp;Vew attachment file
+                                            </a>
+                                        </div>
+                                    </div><!--/.stream-headline-->
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <form class="form-horizontal row-fluid state_changed">
+
+                            <input type="hidden" name="establishment_id" value="{{per.id}}">
+
+                            <div class="modal-body">
+
+                                <div class="span12">
+                                    <label>
+                                        <b>Reason (Optional)</b>
+                                    </label>
+                                    <select class="form-control span12">
+                                        <option value="" selected></option>
+                                        {% for per in reason %}
+                                        <option value="{{per.id}}"> {{per.name}}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <span class="help-inline">
+                                        <a href="#" class="f-xs-1" target="_blank">
+                                            None of the choices, add new ?
+                                        </a>
+                                    </span>
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" name="state" value="decline" class="btn btn-info">
+                                    <i class="icon-exclamation-sign"></i> &nbsp; Decline and Remove
+                                </button>
+                                <button type="submit" name="state" value="approved" class="btn btn-success">
+                                    <i class="icon-check"></i> &nbsp; Accept request
+                                </button>
+                            </div>
+                        </form>
+
+
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+
+        </td>
+
+    </tr>
+
+
+    {% endfor %}
+    </tbody>
+</table>
+

@@ -1,0 +1,38 @@
+{% extends "auth/base_template_for_auth.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="module fullscreen-container">
+
+    <div class="module-head bg-state-warning">
+        <h3><i class="fas fa-times-circle"></i> &nbsp; Sorry your registration was denied</h3>
+        <div class="right-action hide_mobile">
+            <button type="submit" class="btn btn-large btn-zoom-in">
+                <b>Zoom In</b>
+            </button>
+            <button type="submit" class="btn btn-large btn-zoom-reset">
+                <b>Reset Zoom</b>
+            </button>
+            <button type="submit" class="btn btn-large btn-fullscreen">
+                <b>Full screen</b>
+            </button>
+        </div>
+    </div>
+    <div class="module-body fullscreen-content">
+
+        <h4>Hi, {{profile.establishment_name|lower|title}}</h4>
+        <p>
+            Your registration wasn't verified because it doesn't meet the criteria for verification. Don't worry you
+            can submit another request and provide your valid personal information and proof of identity.
+        </p>
+
+        <br/>
+
+    </div>
+
+</div>
+
+{% endblock %}
+

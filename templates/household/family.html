@@ -1,0 +1,564 @@
+﻿{% extends "auth/base_template_for_auth.html" %}
+
+{% load static %}
+
+{% block styles %}
+
+<link type="text/css" href="{% static 'node_modules/smartwizard/dist/css/smart_wizard_all.css' %}" rel="stylesheet">
+
+
+{% endblock %}
+
+{% block styles_after %}
+
+<style>
+    .add-on, input { height : inherit !important }
+    #smartwizard .tab-content {
+        height : auto !important;
+        width : 100%;
+    }
+    .tab-pane { width :100% !important }
+    .btn-box.btn-success.biege  { background : #5bc0de2e !important }
+    .btn-box img { width:100% }
+    .btn-box b {
+        font-size: 16px;
+        font-weight:bold;
+    }
+    form.cus .control-group
+    {
+        margin:0;
+        padding: 3px;
+        margin-bottom: 1px;
+    }
+    .alert { margin-bottom:0 }
+
+    .zoom_in_trigger {
+        position: absolute;
+        width: 68%;
+        left: 209px;
+        /* margin: 0 auto; */
+        top: 104px;
+    }
+
+    @media (min-width: 992px) {
+        .custom.modal-lg {
+            width: 900px;
+        }
+        .modal.custom {
+            margin-left: -417px;
+        }
+    }
+
+
+
+
+
+
+
+
+
+</style>
+
+{% endblock %}
+
+
+{% block full_content %}
+
+<div class="span10 center main_container">
+    <div class="content">
+
+        <div class="module fullscreen-container" id="household">
+            <div class="module-head bg-green">
+                <h3>Digos Covid Tracing System</h3>
+                <div class="right-action hide_mobile">
+                    <button type="submit" class="btn btn-large btn-zoom-in">
+                        <b>Zoom In</b>
+                    </button>
+                    <button type="submit" class="btn btn-large btn-zoom-reset">
+                        <b>Reset Zoom</b>
+                    </button>
+                    <button type="submit" class="btn btn-large btn-fullscreen">
+                        <b>Full screen</b>
+                    </button>
+                </div>
+            </div>
+            <div class="module-body fullscreen-content">
+
+
+                {% for message in messages %}
+
+                <div class="alert {{ message.tags }}">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    {% if message.extra_tags %}
+                    <strong><i class="icon-exclamation-sign icon"></i> {{ message.extra_tags|title }},
+                    </strong>
+                    {% endif %}
+                    {{ message }}
+                </div>
+
+                {% endfor %}
+
+                <div class="btn-controls">
+                    <div class="media stream">
+                        <a href="/household/home" class="media-avatar medium pull-left">
+                            <img src="{% static 'eadmin/images/covid_family.png' %}">
+                        </a>
+                        <div class="media-body">
+                            <div class="stream-headline">
+                                <h4 class="stream-author">
+                                    <a href="/home">Protect your family</a>
+                                </h4>
+                                <div class="stream-text">
+                                    Ania ka dinhi sa opisyal nga site sa sistema sa pagsubay sa covid nga gihimo sa
+                                    lungsod sa digos city ug giaprobahan sa mga departamento nga nagdumala sa pag-ila
+                                    mga tawo nga tingali adunay covid. nagaagi kini sa usa ka ligal nga proseso busa ang
+                                    kasayuran nga among makuha gipanalipdan ug wala magamit alang sa mga katuyoan sa
+                                    gawas.
+                                </div>
+                            </div><!--/.stream-headline-->
+                        </div>
+                    </div>
+
+                    <div class="btn-box-row row-fluid">
+
+                        <div class="module message">
+                            <div class="module-option clearfix">
+                                <div class="pull-left">
+                                    <h5>Family member list</h5>
+                                </div>
+                                <div class="pull-right">
+                                    <a href="/home" class="btn btn-primary btn-large">Back to home</a>
+                                    <a class="btn btn-primary btn-large"
+                                       href="#add_member"
+                                       role="button" data-toggle="modal">Add family</a>
+                                </div>
+                            </div>
+                            <div class="module-body table">
+                                <table class="table table-message">
+                                    <tbody>
+                                    <tr class="heading">
+                                        <td class="cell-icon hidden-phone hidden-tablet" style="width:5%">
+                                        </td>
+                                        <td class="cell-status" style="width:15%">
+                                            Status
+                                        </td>
+                                        <td class="cell-title" style="width:25%">
+                                            Member name
+                                        </td>
+                                        <td class="cell-time hidden-phone hidden-tablet" style="width:10%">
+                                            Relationship
+                                        </td>
+                                        <td class="cell-time hidden-phone hidden-tablet" style="width:15%">
+                                            Age
+                                        </td>
+                                        <td class="cell-status" style="width:25%">
+                                            Covid Identification Card (ID)
+                                        </td>
+                                    </tr>
+                                    {% for per in family_members %}
+
+                                    {% if per.is_confirm == per.CONFIRM_APPROVED %}
+
+                                    <tr class="unread starred">
+                                        <td class="cell-icon hidden-phone hidden-tablet" style="width:2%">
+                                            <i class="icon-star"></i>
+                                        </td>
+                                        <td class="cell-status" style="width:15%">
+                                            <b>Verified</b>
+                                        </td>
+                                        <td class="cell-title" style="width:30%">
+                                            <a href="#">{{per.first_name|lower|title}} {{per.last_name|lower|title}}</a>
+                                        </td>
+                                        <td class="cell-time hidden-phone hidden-tablet" style="width:15%">
+                                            {{per.relationship.name|lower|title}}, {{per.get_gender_display}}
+                                        </td>
+                                        <td class="cell-time hidden-phone hidden-tablet" style="width:15%">
+                                            {{per.get_age}} yrs old
+                                        </td>
+                                        <td class="cell-status" style="width:20%">
+                                            <a href="/household/family/qr_code?family_members_id={{per.id}}"
+                                               class="btn btn-success" target="_blank">
+                                                View
+                                            </a>
+                                        </td>
+                                    </tr>
+
+                                    {% else %}
+
+                                    <tr class="">
+                                        <td class="cell-icon hidden-phone hidden-tablet" style="width:2%">
+                                            <i class="icon-star"></i>
+                                        </td>
+                                        <td class="cell-status text-error" style="width:15%">
+                                            Not Verified
+                                        </td>
+                                        <td class="cell-title" style="width:25%">
+                                            <a href="#not_verified_modal" role="button"
+                                               data-toggle="modal">
+                                                {{per.first_name|lower|title}} {{per.last_name|lower|title}}
+                                            </a>
+                                        </td>
+                                        <td class="cell-time hidden-phone hidden-tablet" style="width:20%">
+                                            {% if per.relationship.is_owner %}
+                                            Account Owner
+                                            {% else %}
+                                            {{per.relationship.name|lower|title}}
+                                            {% endif %}
+                                            , {{per.get_gender_display}}
+                                        </td>
+                                        <td class="cell-time hidden-phone hidden-tablet" style="width:15%">
+                                            {{per.get_age}} yrs old
+                                        </td>
+                                        <td class="cell-status" style="width:20%">
+                                        </td>
+                                        <div class="modal hide cus fullscreen-container"
+                                             id="not_verified_modal"
+                                             data-backdrop="static" data-keyboard="false" style="top:10px">
+                                            <div class="modal-backdrop"></div>
+                                            <div class="overlay-spinner">
+                                                <div class="icon">
+                                                    <i class="fa-spin fa fa-spinner"></i>
+                                                </div>
+                                            </div>
+                                            <div class="modal-dialog modal-xl fullscreen-content">
+                                                <div class="modal-content">
+
+                                                    <div
+                                                            class="modal-header bg-state-warning state_alert when_approved">
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                                aria-hidden="true">&times;
+                                                        </button>
+                                                        <h3 class="modal-title"><i class="fa fa-check-circle"></i>
+                                                            &nbsp;
+                                                            Requesting for Approval</h3>
+                                                    </div>
+
+                                                    <div class="modal-header bg-green">
+                                                        <h5 class="modal-title no-margin">
+                                                            Household Member
+                                                        </h5>
+                                                    </div>
+
+                                                    <div class="modal-header bg-light no-padding">
+
+                                                        <div class="media stream cus">
+
+                                                            {% if per.profile %}
+
+                                                            <a href="/media/{{per.profile}}" target="_blank"
+                                                               class="media-avatar medium pull-left">
+                                                                <img src="/media/{{per.profile}}">
+                                                            </a>
+
+                                                            {% else %}
+
+                                                            <a href="#" class="media-avatar medium pull-left">
+                                                                <img src="/static/eadmin/images/email.svg">
+                                                            </a>
+
+                                                            {% endif %}
+
+                                                            <div class="media-body">
+                                                                <div class="stream-headline">
+                                                                    <div class="pull-left">
+                                                                        <h4 class="stream-author">
+                                                                            <a href="/home">
+                                                                                {{per.first_name}}
+                                                                                {{per.last_name}}</a>
+                                                                        </h4>
+
+                                                                        <div class="stream-text">
+                                                                            {{per.get_age}} years old of age
+                                                                        </div>
+                                                                        <div class="stream-text">
+                                                                            {{per.relationship.name|title}},
+                                                                            {{per.get_gender_display}}
+                                                                        </div>
+                                                                        <div class="stream-text">
+                                                                            <b>Birth date</b>,
+                                                                            {{per.date_added}}
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="pull-right">
+                                                <a target="_blank" href="/media/{{per.verification_file}}"
+                                                   class="btn btn-primary view_attachment">
+                                                    <i class="icon-paper-clip"></i> &nbsp;Vew attachment file
+                                                </a>
+                                            </div>
+                                                                </div><!--/.stream-headline-->
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="modal-header bg-green">
+                                                        <h5 class="modal-title no-margin">Household Profile</h5>
+                                                    </div>
+
+                                                    <div class="modal-header bg-light no-padding">
+
+                                                        <div class="media stream cus">
+                                                            <a href="/household/home"
+                                                               class="media-avatar medium pull-left">
+                                                                <img src="/static/eadmin/images/woman.svg">
+                                                            </a>
+                                                            <div class="media-body">
+                                                                <div class="stream-headline">
+                                                                    <h4 class="stream-author">
+                                                                        <a href="/home">
+                                                                            {{per.household_profile.user.get_full_name}}
+                                                                        </a>
+                                                                    </h4>
+                                                                    <div class="stream-text">
+                                                                        <b>
+                                                                            {{per.household_profile.get_gender_display}},
+                                                                            {{per.household_profile.get_age}}
+                                                                            yrs
+                                                                            old</b>
+                                                                    </div>
+                                                                    <div class="stream-text">
+                                                                        {% if per.household_profile.barangay %}
+
+                                                                        <b>{{per.household_profile.purok.barangay.name}}
+                                                                            {{per.household_profile.purok.name}},
+                                                                            {{per.household_profile.street|title}}</b>
+
+                                                                        {% else %}
+
+                                                                        <b>{{per.household_profile.purok.name}},
+                                                                            {{per.household_profile.street|title}}</b>
+
+                                                                        {% endif %}
+                                                                    </div>
+                                                                    <div class="stream-text">
+                                                                        <b>+63
+                                                                            {{per.household_profile.phone_number}}</b>
+                                                                    </div>
+                                                                    <div class="stream-text">
+                                                                        <b>Account created on,
+                                                                            {{per.household_profile.date_created}}</b>
+                                                                    </div>
+                                                                    <div class="stream-text">
+                                                                        <b>{{per.household_profile.no_household}}</b>
+                                                                        household members
+                                                                    </div>
+                                                                </div><!--/.stream-headline-->
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div><!-- /.modal-content -->
+                                            </div><!-- /.modal-dialog -->
+                                            <div class="modal-footer">
+                                                <a href="/household/family/add/cancel?family_members_id={{per.id}}"
+                                                   class="btn btn-warning">
+                                                    <i class="icon-trash"></i> &nbsp; Cancel Request
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </tr>
+
+
+                                    {% endif %}
+
+                                    {% empty %}
+
+                                    <tr>
+
+                                        <td style="width:100%" colspan="6">
+
+                                            <div class="inner_content no_display">
+                                                <div>
+                                                    <h4>No information on your household members</h4>
+                                                    <p>
+                                                        <span>
+                                                            <a href="#add_member" data-toggle="modal">
+                                                                Add new members and verify
+                                                            </a>
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                        </td>
+
+
+                                    </tr>
+
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="module-foot">
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div><!--/.content-->
+</div><!--/.span9-->
+
+
+{% endblock %}
+
+
+{% block out %}
+
+
+<div class="modal hide modal-lg fullscreen-container custom" id="add_member" style="top:10px">
+    <div class="modal-backdrop"></div>
+    <div class="modal-dialog fullscreen-content">
+        <div class="modal-content">
+            <div class="modal-header bg-success">
+                <div class="pull-right">
+                    <button type="button" class="btn btn-default btn-fullscreen">
+                        Full screen
+                    </button>
+                </div>
+                <h3 class="modal-title">Add family members</h3>
+            </div>
+
+            <form action="/household/family/add/request"
+                  method="post"
+                  enctype="multipart/form-data"
+                  class="form-horizontal row-fluid cus"
+                  data-parsley-validate>
+                {% csrf_token %}
+
+                <input type="hidden" value="{{household_profile.id}}" name="household_profile">
+
+                <div class="modal-body">
+
+                    <h4>Personal na mga detalye</h4>
+
+                    <div class="docs-example">
+
+                        <div class="control-group">
+                            <div class="span6">
+                                <label>
+                                    <b>First name</b>
+                                </label>
+                                <input type="text" required name="first_name" class="form-control span12"
+                                       placeholder="Given name (Required)">
+                            </div>
+                            <div class="span6">
+                                <label>
+                                    <b>Last name</b>
+                                </label>
+                                <input type="text" required name="last_name" class="form-control span12"
+                                       placeholder="Last name (Required)">
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+
+                            <div class="span6">
+                                <label>
+                                    <b>Gender</b>
+                                </label>
+                                <label class="radio inline">
+                                    <input type="radio" required="" name="gender" value="0" checked=""
+                                           data-parsley-multiple="gender">
+                                    Male
+                                </label>
+
+
+                                <label class="radio inline">
+                                    <input type="radio" required="" name="gender" value="1"
+                                           data-parsley-multiple="gender">
+                                    Female
+                                </label>
+                            </div>
+
+                            <div class="span6">
+                                <label>
+                                    <b>Birth date</b>
+                                </label>
+                                <input type="date" name="date_of_birth" required class="form-control span12"
+                                       placeholder="Example input placeholder">
+                            </div>
+
+                        </div>
+
+                        <div class="control-group">
+                            <div class="span12">
+                                <label>
+                                    <b>Relationship to the owner of the account</b>
+                                </label>
+                                <select name="relationship" class="form-control span12" required>
+                                    <option selected disabled value="">
+                                        Please select relationship of the owner of the account (Required)
+                                    </option>
+                                    {% for per in relationship %}
+                                    <option value="{{per.id}}">{{per.name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <h4>Pag-ila</h4>
+                    <p>
+                        Paghatag usa ka balido nga id, permits o bisan
+                        unsang mga dokumento. eg. student id, birth certificat.
+                    </p>
+
+                    <div class="docs-example">
+
+                        <div class="control-group">
+                            <label class="control-label">
+                                <b>Residential identification</b>
+                            </label>
+                            <div class="controls">
+                                <input data-title="Please choose a file" required="" type="file"
+                                       name="verification_file" accept="application/msword,application/pdf,image/*"
+                                       class="span9 tip btn btn-large btn-block">
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label">
+                                <b>Profile</b>
+                            </label>
+                            <div class="controls">
+                                <input data-title="Please choose a file" required="" type="file" name="profile"
+                                       accept="image/*" class="span9 tip btn btn-large btn-block">
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button"
+                            class="btn btn-default"
+                            data-dismiss="modal">Close
+                    </button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+
+            </form>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+{% endblock %}
+
+
+{% block plugins %}
+
+<script src="{% static 'plugins/jquery-input-mask/dist/jquery.mask.js' %}" type="text/javascript"></script>
+
+<script src="{% static 'node_modules/smartwizard/dist/js/jquery.smartWizard.js' %}"></script>
+
+{% endblock %}
